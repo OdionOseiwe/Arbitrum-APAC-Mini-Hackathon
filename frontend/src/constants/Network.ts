@@ -1,0 +1,1 @@
+export const CHAIN_ID_HEX = `0x66eee`;

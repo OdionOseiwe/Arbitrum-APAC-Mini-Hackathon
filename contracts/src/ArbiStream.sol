@@ -5,9 +5,9 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
- * @title MantleStream.
+ * @title ArbiStream.
  * @author Odion Oseiwe.
- * @notice A protocol for creating real-time, per-second money streams on Mantle.
+ * @notice A protocol for creating real-time, per-second money streams on Arbitrum.
  */
 
 contract ArbiStream is ReentrancyGuard {
@@ -76,7 +76,6 @@ contract ArbiStream is ReentrancyGuard {
         USDT = _usdtAddress;
     }
 
-    //TODO: add a message 
     ///@dev used to create stream
     ///@param _recipient the address that can claim money stream
     ///@param _duration the length of stream
@@ -123,7 +122,6 @@ contract ArbiStream is ReentrancyGuard {
         return id;
     }
 
-    //TODO: add a message 
     ///@dev used to create stream for multiple recipient
     ///@param _recipients the addresses that can claim money stream
     ///@param _duration the length of stream
@@ -437,3 +435,6 @@ contract ArbiStream is ReentrancyGuard {
     }
 
 }
+
+
+
