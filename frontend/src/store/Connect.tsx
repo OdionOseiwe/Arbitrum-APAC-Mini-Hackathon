@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { ethers } from "ethers";
 import { CHAIN_ID_HEX } from "../constants/Network";
-import StreamABI from "../constants/ArbitrumStream.json"
-import MockUSDT from '../constants/MockUSDT.json'
+import StreamABI from "../constants/ArbitrumStream.json";
+import MockUSDT from '../constants/MockUSDT.json';
 import {Arbitrum_stream_address, Mock_USDT_address  } from "../constants/Address";
 
 interface WalletState {
