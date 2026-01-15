@@ -98,8 +98,8 @@ Fair settlement on cancellation:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/OdionOseiwe/ArbitrumHackathon.git
-   cd ArbitrumHackathon
+   git clone https://github.com/OdionOseiwe/Arbitrum-APAC-Mini-Hackathon.git
+   cd OdionOseiwe/Arbitrum-APAC-Mini-Hackathon
    ```
 
 2. **Install dependencies**

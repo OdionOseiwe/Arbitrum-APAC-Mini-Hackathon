@@ -76,6 +76,7 @@ contract ArbiStream is ReentrancyGuard {
         USDT = _usdtAddress;
     }
 
+    //TODO: add a message 
     ///@dev used to create stream
     ///@param _recipient the address that can claim money stream
     ///@param _duration the length of stream
@@ -122,6 +123,7 @@ contract ArbiStream is ReentrancyGuard {
         return id;
     }
 
+    //TODO: add a message 
     ///@dev used to create stream for multiple recipient
     ///@param _recipients the addresses that can claim money stream
     ///@param _duration the length of stream
@@ -261,16 +263,25 @@ contract ArbiStream is ReentrancyGuard {
         require(!stream.paused, "stream paused");
 
         bool found = false;
+
         for (uint256 i = 0; i < stream.recipient.length; i++) {
             if (stream.recipient[i] == msg.sender) {
+                _removeStreamFromRecipient(msg.sender, _streamId);
+
                 stream.recipient[i] = _newRecipient;
+
+                streamsByRecipient[_newRecipient].push(_streamId);
+
                 found = true;
                 break;
             }
         }
+
         require(found, "caller not a recipient");
+
         emit StreamRedirected(_streamId, msg.sender, _newRecipient);
     }
+
 
     ///@dev used to pause stream
     ///@param _streamId stream id
@@ -317,6 +328,7 @@ contract ArbiStream is ReentrancyGuard {
 
         // get total earned for a duration
         uint256 totalEarned = elapsed * stream.flowRate;
+        stream.endTime = block.timestamp;
 
         // Pay each recipient their final share
         for (uint256 i = 0; i < stream.recipient.length; i++) {
@@ -345,6 +357,10 @@ contract ArbiStream is ReentrancyGuard {
         emit StreamCancelled(_streamId);
     }
 
+    ///@dev used to calculate rewards for a user in a stream
+    ///@param user address of the user
+    ///@param stream the stream struct
+    ///@return the claimable amount
     function _calculateRewards(
         address user,
         Stream storage stream
@@ -372,9 +388,12 @@ contract ArbiStream is ReentrancyGuard {
 
     function getClaimableBalance(uint256 streamId) public view returns (uint256) {
         Stream storage stream = streams[streamId];
-        require(stream.active, "stream inactive");
-        require(!stream.paused, "stream paused");
-        require(block.timestamp >= stream.startTime, "stream not started");
+        if (!stream.active) {
+            return 0;
+        }
+        if (stream.paused) {
+            return 0;
+        }
 
         uint256 elapsed;
 
@@ -434,7 +453,19 @@ contract ArbiStream is ReentrancyGuard {
         return (s.recipient, s.percentages, s.amountWithdrawn);
     }
 
+    function _removeStreamFromRecipient(address recipient, uint256 streamId) internal {
+        uint256[] storage list = streamsByRecipient[recipient];
+        uint256 length = list.length;
+
+        for (uint256 i = 0; i < length; i++) {
+            if (list[i] == streamId) {
+                list[i] = list[length - 1];
+                list.pop();
+                break;
+            }
+        }
+    }
+
+
 }
-
-
 
